@@ -9,6 +9,6 @@ exports.twitterKeys = {
 }
 
 exports.spotifyKeys = {
- client_id: 8a597cac843c4678a7c169b7eb9b9626,
- client_secret: 3fbe195219b944bb88c5ebf971ff81d1,
+ client_id: '8a597cac843c4678a7c169b7eb9b9626',
+ client_secret: '3fbe195219b944bb88c5ebf971ff81d1',
 }
