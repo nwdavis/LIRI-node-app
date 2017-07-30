@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/nwdavis/LIRI-node-app/issues"
   },
-  "homepage": "https://github.com/nwdavis/LIRI-node-app#readme"
+  "homepage": "https://github.com/nwdavis/LIRI-node-app#readme",
+  "dependencies": {
+    "node-spotify-api": "^1.0.6"
+  }
 }
