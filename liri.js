@@ -3,7 +3,7 @@ var fs = require("fs");
 var keys = [];
 
 var action = process.argv[2]
-var request = process.argv[3]
+var ask = process.argv[3]
 
 fs.readFile("keys.js", "utf8", function(err, data){
     if(err){
@@ -58,12 +58,56 @@ function myTweets(){
 
 function spotifyThisSong(){
 
+    var Spotify = require("node-spotify-api");
+
+    var spotify = new Spotify({
+        id: '8a597cac843c4678a7c169b7eb9b9626',
+        secret: '3fbe195219b944bb88c5ebf971ff81d1'
+    });
+ 
+    spotify.search({ type: 'track', query: 'All the Small Things', limit: 5 }, function(err, response) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+        console.log("getting this far");
+        var songArr = response.tracks.items;
+        console.log(songArr[0].name)
+        
+});
+
 }
 
+spotifyThisSong();
+
 function movieThis(){
+
+    var request = require("request");
+
+    request(`http://www.omdbapi.com/?t=${ask}&y=&plot=short&apikey=40e9cece`, function(error, response, body) {
+
+    if (!error && response.statusCode === 200) {
+        
+        
+    console.log(`${ask}'s official title is: ${JSON.parse(body).Title}`);
+    console.log(`${ask} was released in: ${JSON.parse(body).Year}`);
+    console.log(`${ask}'s imdb rating is: ${JSON.parse(body).imdbRating}`);
+    // console.log(`${ask}'s Rotten Tomatoes rating is: ${JSON.parse(body).}`);
+    console.log(`${ask} was produced in: ${JSON.parse(body).Country}`);
+    console.log(`${ask}'s language(s) is/are: ${JSON.parse(body).Language}`);
+    console.log(`In short, ${ask} is about: ${JSON.parse(body).Plot}`);
+    console.log(`${ask} stars: ${JSON.parse(body).Actors}`);
+  }
+});
 
 }
 
 function doWhatItSays(){
+    fs.readFile("random.txt", "utf8", function(err, data){
+        if (err) {
+            console.log(err)
+        }
+        var dataArr = data.split(",");
+        
 
+    })
 }
