@@ -35,20 +35,26 @@ switch (action) {
 
 function myTweets(){
 
-   var twitter = require('twitter');
+    var twitter = require('twitter');
  
     var client = new twitter({
-        consumer_key: keys.twitterkeys[0],
-        consumer_secret: keys.twitterkeys[1],
-        access_token_key: keys.twitterkeys[2],
-        access_token_secret: keys.twitterkeys[3]
+        consumer_key: 'fKM34DyPHFedY24MUSHJ6bgEP',
+        consumer_secret: 'bIeKfX5lWhgKjFTtIXkomUg5EQuoedzLRDqVjpmiCX3s2Z2btX',
+        access_token_key: '891103805378633728-AsK47LsoX69p4YNVq1y5llCzg3rxggH',
+        access_token_secret: 'jYVmOZqD50c42HQkaIgQ7ioT238EB22Br5nk5jY0th6HF'
     });
 
-    console.log(client)
+    var params = {screen_name: 'LIRIPlacehold'};
+
+    client.get('statuses/user_timeline', params, function(error, tweets, response) {
+        if (!error) {
+           tweets.forEach(function(tweet, index, tweets){
+                console.log(tweets[index].text);
+           })           
+        }
+
+    });
 }
-
-myTweets();
-
 
 function spotifyThisSong(){
 
