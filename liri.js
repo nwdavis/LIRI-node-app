@@ -24,7 +24,7 @@ switch (action) {
     break;
 
     case "movie-this":
-    movieThis();
+    movieThis(ask);
     break;
 
     case "do-what-it-says":
@@ -33,7 +33,7 @@ switch (action) {
 }
 
 
-function myTweets(){
+function myTweets(ask){
 
     var twitter = require('twitter');
  
@@ -56,7 +56,8 @@ function myTweets(){
     });
 }
 
-function spotifyThisSong(){
+
+function spotifyThisSong(ask){
 
     var Spotify = require("node-spotify-api");
 
@@ -65,33 +66,35 @@ function spotifyThisSong(){
         secret: '3fbe195219b944bb88c5ebf971ff81d1'
     });
  
-    spotify.search({ type: 'track', query: 'All the Small Things', limit: 5 }, function(err, response) {
+    spotify.search({ type: 'track', query: ask, limit: 1}, function(err, response) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-        console.log("getting this far");
+        
         var songArr = response.tracks.items;
+
+        console.log(songArr[0].artists[0].name)
         console.log(songArr[0].name)
+        console.log(songArr[0].href)
+        console.log(songArr[0].album.name)
         
 });
 
 }
 
-spotifyThisSong();
 
-function movieThis(){
+function movieThis(ask){
 
     var request = require("request");
 
     request(`http://www.omdbapi.com/?t=${ask}&y=&plot=short&apikey=40e9cece`, function(error, response, body) {
 
     if (!error && response.statusCode === 200) {
-        
-        
+    console.log(JSON.parse(body).Ratings[1].Value)
     console.log(`${ask}'s official title is: ${JSON.parse(body).Title}`);
     console.log(`${ask} was released in: ${JSON.parse(body).Year}`);
     console.log(`${ask}'s imdb rating is: ${JSON.parse(body).imdbRating}`);
-    // console.log(`${ask}'s Rotten Tomatoes rating is: ${JSON.parse(body).}`);
+    console.log(`${ask}'s Rotten Tomatoes rating is: ${JSON.parse(body).Ratings[1].Value}`);
     console.log(`${ask} was produced in: ${JSON.parse(body).Country}`);
     console.log(`${ask}'s language(s) is/are: ${JSON.parse(body).Language}`);
     console.log(`In short, ${ask} is about: ${JSON.parse(body).Plot}`);
@@ -108,6 +111,19 @@ function doWhatItSays(){
         }
         var dataArr = data.split(",");
         
+        switch(dataArr[0]){
 
+            case "my-tweets":
+            myTweets();
+            break;
+
+            case "spotify-this-song":
+            spotifyThisSong(dataArr[1]);
+            break;
+
+            case "movie-this":
+            movieThis(dataArr[1]);
+            break;
+        }
     })
 }
