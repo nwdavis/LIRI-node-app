@@ -12,23 +12,33 @@ fs.readFile("keys.js", "utf8", function(err, data){
     keys = data;
 })
 
-
-
 switch (action) {
     case "my-tweets":
     myTweets();
     break;
 
     case "spotify-this-song":
-    spotifyThisSong();
+    if (typeof ask != "undefined"){
+        spotifyThisSong(ask);
+    } else {
+        spotifyThisSong("The Sign")
+    };
     break;
 
     case "movie-this":
-    movieThis(ask);
+    if (typeof ask != "undefined"){
+        movieThis(ask);
+    } else {
+        movieThis("Mr. Nobody")
+    };
     break;
 
     case "do-what-it-says":
     doWhatItSays();
+    break;
+
+    case "change-random":
+    changeRandom();
     break;
 }
 
@@ -77,7 +87,8 @@ function spotifyThisSong(ask){
         console.log(songArr[0].name)
         console.log(songArr[0].href)
         console.log(songArr[0].album.name)
-        
+    
+
 });
 
 }
@@ -90,7 +101,7 @@ function movieThis(ask){
     request(`http://www.omdbapi.com/?t=${ask}&y=&plot=short&apikey=40e9cece`, function(error, response, body) {
 
     if (!error && response.statusCode === 200) {
-    console.log(JSON.parse(body).Ratings[1].Value)
+    
     console.log(`${ask}'s official title is: ${JSON.parse(body).Title}`);
     console.log(`${ask} was released in: ${JSON.parse(body).Year}`);
     console.log(`${ask}'s imdb rating is: ${JSON.parse(body).imdbRating}`);
@@ -127,3 +138,20 @@ function doWhatItSays(){
         }
     })
 }
+
+function changeRandom(){
+    fs.writeFile("random.txt", `${process.argv[3]},${process.argv[4]}`, function(err){
+        if (err){
+            return console.log(err);
+        }
+        console.log("random.txt was updated!")
+    });
+}
+
+fs.appendFile("log.txt", "utf8", function(err){
+    if (err){
+        console.log(err);
+    }
+
+    console.log("Activity was logged to log.txt")
+})
