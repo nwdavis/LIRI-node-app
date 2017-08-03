@@ -1,6 +1,6 @@
 var fs = require("fs");
+var keys = require("./keys.js")
 
-var keys = [];
 
 var action = process.argv[2]
 var ask = process.argv[3]
@@ -21,7 +21,7 @@ switch (action) {
     if (typeof ask != "undefined"){
         spotifyThisSong(ask);
     } else {
-        spotifyThisSong("The Sign")
+        spotifyThisSong("The Sign Ace Of Base")
     };
     break;
 
@@ -48,10 +48,10 @@ function myTweets(ask){
     var twitter = require('twitter');
  
     var client = new twitter({
-        consumer_key: 'fKM34DyPHFedY24MUSHJ6bgEP',
-        consumer_secret: 'bIeKfX5lWhgKjFTtIXkomUg5EQuoedzLRDqVjpmiCX3s2Z2btX',
-        access_token_key: '891103805378633728-AsK47LsoX69p4YNVq1y5llCzg3rxggH',
-        access_token_secret: 'jYVmOZqD50c42HQkaIgQ7ioT238EB22Br5nk5jY0th6HF'
+        consumer_key: keys.twitterKeys.consumer_key,
+        consumer_secret: keys.twitterKeys.consumer_secret,
+        access_token_key: keys.twitterKeys.access_token_key,
+        access_token_secret: keys.twitterKeys.access_token_secret,
     });
 
     var params = {screen_name: 'LIRIPlacehold'};
@@ -72,15 +72,15 @@ function spotifyThisSong(ask){
     var Spotify = require("node-spotify-api");
 
     var spotify = new Spotify({
-        id: '8a597cac843c4678a7c169b7eb9b9626',
-        secret: '3fbe195219b944bb88c5ebf971ff81d1'
+        id: keys.spotifyKeys.client_id,
+        secret: keys.spotifyKeys.client_secret
     });
  
     spotify.search({ type: 'track', query: ask, limit: 1}, function(err, response) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-        
+
         var songArr = response.tracks.items;
 
         console.log(songArr[0].artists[0].name)
@@ -140,7 +140,7 @@ function doWhatItSays(){
 }
 
 function changeRandom(){
-    fs.writeFile("random.txt", `${process.argv[3]},${process.argv[4]}`, function(err){
+    fs.writeFile("random.txt", `${process.argv[3]},"${process.argv[4]}"`, function(err){
         if (err){
             return console.log(err);
         }
@@ -148,7 +148,7 @@ function changeRandom(){
     });
 }
 
-fs.appendFile("log.txt", "utf8", function(err){
+fs.appendFile("log.txt", `,${process.argv[2]},"${process.argv[3]}"`, function(err){
     if (err){
         console.log(err);
     }
