@@ -98,8 +98,10 @@ function movieThis(ask){
 
     var request = require("request");
 
+    console.log(ask)
     request(`http://www.omdbapi.com/?t=${ask}&y=&plot=short&apikey=40e9cece`, function(error, response, body) {
 
+    
     if (!error && response.statusCode === 200) {
     
     console.log(`${ask}'s official title is: ${JSON.parse(body).Title}`);
@@ -111,6 +113,7 @@ function movieThis(ask){
     console.log(`In short, ${ask} is about: ${JSON.parse(body).Plot}`);
     console.log(`${ask} stars: ${JSON.parse(body).Actors}`);
   }
+  
 });
 
 }
