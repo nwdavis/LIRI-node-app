@@ -12,6 +12,7 @@ fs.readFile("keys.js", "utf8", function(err, data){
     keys = data;
 })
 
+
 switch (action) {
     case "my-tweets":
     myTweets();
@@ -39,6 +40,10 @@ switch (action) {
 
     case "change-random":
     changeRandom();
+    break;
+
+    case "help":
+    help();
     break;
 }
 
@@ -113,7 +118,7 @@ function movieThis(ask){
     console.log(`In short, ${ask} is about: ${JSON.parse(body).Plot}`);
     console.log(`${ask} stars: ${JSON.parse(body).Actors}`);
   }
-  
+
 });
 
 }
@@ -157,4 +162,12 @@ fs.appendFile("log.txt", `,${process.argv[2]},"${process.argv[3]}"`, function(er
     }
 
     console.log("Activity was logged to log.txt")
-})
+});
+
+function help(){
+    console.log(`Type "my-tweets" to see my most recent tweets.`);
+    console.log(`Type "spotify-this-song", followed by a song in quotes to search Spotify.`);
+    console.log(`Type "movie-this", followed by a movie in quotes to search OMDB.`);
+    console.log(`Type "do-what-it-says" to perform a random task.`);
+    console.log(`Type "change-random", followed by a liri action and search query to set the random action.`);
+};
