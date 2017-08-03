@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/nwdavis/LIRI-node-app#readme",
   "dependencies": {
+    "moviedb": "^0.2.8",
     "node-spotify-api": "^1.0.6"
   }
 }

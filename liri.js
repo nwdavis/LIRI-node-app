@@ -5,6 +5,7 @@ var keys = require("./keys.js")
 var action = process.argv[2]
 var ask = process.argv[3]
 
+//getting keys
 fs.readFile("keys.js", "utf8", function(err, data){
     if(err){
         console.log(err)
@@ -12,7 +13,7 @@ fs.readFile("keys.js", "utf8", function(err, data){
     keys = data;
 })
 
-
+//action switch for liri actions
 switch (action) {
     case "my-tweets":
     myTweets();
@@ -47,7 +48,7 @@ switch (action) {
     break;
 }
 
-
+//gets tweets
 function myTweets(ask){
 
     var twitter = require('twitter');
@@ -71,7 +72,7 @@ function myTweets(ask){
     });
 }
 
-
+//gets spotify song
 function spotifyThisSong(ask){
 
     var Spotify = require("node-spotify-api");
@@ -82,6 +83,7 @@ function spotifyThisSong(ask){
     });
  
     spotify.search({ type: 'track', query: ask, limit: 1}, function(err, response) {
+        
         if (err) {
             return console.log('Error occurred: ' + err);
         }
@@ -94,35 +96,36 @@ function spotifyThisSong(ask){
         console.log(songArr[0].album.name)
     
 
-});
+    });
 
-}
+};
 
-
+//gets movie
 function movieThis(ask){
 
     var request = require("request");
 
-    console.log(ask)
+    
     request(`http://www.omdbapi.com/?t=${ask}&y=&plot=short&apikey=40e9cece`, function(error, response, body) {
 
-    
-    if (!error && response.statusCode === 200) {
-    
-    console.log(`${ask}'s official title is: ${JSON.parse(body).Title}`);
-    console.log(`${ask} was released in: ${JSON.parse(body).Year}`);
-    console.log(`${ask}'s imdb rating is: ${JSON.parse(body).imdbRating}`);
-    console.log(`${ask}'s Rotten Tomatoes rating is: ${JSON.parse(body).Ratings[1].Value}`);
-    console.log(`${ask} was produced in: ${JSON.parse(body).Country}`);
-    console.log(`${ask}'s language(s) is/are: ${JSON.parse(body).Language}`);
-    console.log(`In short, ${ask} is about: ${JSON.parse(body).Plot}`);
-    console.log(`${ask} stars: ${JSON.parse(body).Actors}`);
-  }
+        //need filter for undefined title
+        if (!error && response.statusCode === 200) {
+        
+            console.log(`${ask}'s official title is: ${JSON.parse(body).Title}`);
+            console.log(`${ask} was released in: ${JSON.parse(body).Year}`);
+            console.log(`${ask}'s imdb rating is: ${JSON.parse(body).imdbRating}`);
+            console.log(`${ask}'s Rotten Tomatoes rating is: ${JSON.parse(body).Ratings[1].Value}`);
+            console.log(`${ask} was produced in: ${JSON.parse(body).Country}`);
+            console.log(`${ask}'s language(s) is/are: ${JSON.parse(body).Language}`);
+            console.log(`In short, ${ask} is about: ${JSON.parse(body).Plot}`);
+            console.log(`${ask} stars: ${JSON.parse(body).Actors}`);
+        }
 
-});
+    });
 
-}
+};
 
+//performs task defined in random.txt
 function doWhatItSays(){
     fs.readFile("random.txt", "utf8", function(err, data){
         if (err) {
@@ -144,9 +147,10 @@ function doWhatItSays(){
             movieThis(dataArr[1]);
             break;
         }
-    })
-}
+    });
+};
 
+//changes the action in random.txt
 function changeRandom(){
     fs.writeFile("random.txt", `${process.argv[3]},"${process.argv[4]}"`, function(err){
         if (err){
@@ -154,8 +158,8 @@ function changeRandom(){
         }
         console.log("random.txt was updated!")
     });
-}
-
+};
+//appends activity to log
 fs.appendFile("log.txt", `,${process.argv[2]},"${process.argv[3]}"`, function(err){
     if (err){
         console.log(err);
@@ -163,7 +167,7 @@ fs.appendFile("log.txt", `,${process.argv[2]},"${process.argv[3]}"`, function(er
 
     console.log("Activity was logged to log.txt")
 });
-
+//lays out actions app can perform
 function help(){
     console.log(`Type "my-tweets" to see my most recent tweets.`);
     console.log(`Type "spotify-this-song", followed by a song in quotes to search Spotify.`);
