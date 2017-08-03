@@ -109,6 +109,11 @@ function movieThis(ask){
     request(`http://www.omdbapi.com/?t=${ask}&y=&plot=short&apikey=40e9cece`, function(error, response, body) {
 
         //need filter for undefined title
+        var title = JSON.parse(body).Title;
+        if (title === undefined) {
+            console.log("I can't find that movie.");
+            return;
+        }
         if (!error && response.statusCode === 200) {
         
             console.log(`${ask}'s official title is: ${JSON.parse(body).Title}`);
